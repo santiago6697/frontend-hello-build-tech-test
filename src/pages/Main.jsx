@@ -21,7 +21,6 @@ const Main = () => {
   const { authSuccess, error, message, loading, username, favs, favsIds, repos } = useSelector(
     (state) => state.users
   );
-  const [items, setItems] = useState(repos);
   const [showFavs, setShowFavs] = useState(false);
   const dispatch = useDispatch();
 

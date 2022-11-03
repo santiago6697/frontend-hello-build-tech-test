@@ -7,12 +7,7 @@ import Login from '../../collections/Forms/Login';
 import SignUp from '../../collections/Forms/SignUp';
 import githubLogo from '../../../assets/images/github-logo.svg';
 
-const Auth = ({
-  authSuccess = false,
-  onLogin = () => {},
-  onSignUp = () => {},
-  onClick = () => {}
-}) => {
+const Auth = ({ authSuccess = false, onLogin = () => {}, onSignUp = () => {} }) => {
   const [form, setForm] = useState(AUTH_FORM.LOGIN);
 
   const handleFormChange = () => {
