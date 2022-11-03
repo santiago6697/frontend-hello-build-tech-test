@@ -5,7 +5,7 @@ export const postRequest = async (config) => {
   return axios
     .post(url, data, options)
     .then((response) => {
-      return response.data;
+      return response;
     })
     .catch((error) => {
       console.log(error);
@@ -18,7 +18,7 @@ export const putRequest = async (config) => {
   return axios
     .put(url, data, options)
     .then((response) => {
-      return response.data;
+      return response;
     })
     .catch((error) => {
       console.log(error);
@@ -31,7 +31,7 @@ export const getRequest = async (config) => {
   return axios
     .get(url, options)
     .then((response) => {
-      return response.data;
+      return response;
     })
     .catch((error) => {
       console.log(error);

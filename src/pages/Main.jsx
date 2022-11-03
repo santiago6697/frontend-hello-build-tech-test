@@ -7,12 +7,15 @@ import {
   loginThunk,
   putFavsThunk,
   checkLocalStorage,
-  signUpThunk
+  signUpThunk,
+  signOut,
+  dismissError
 } from '../features/users';
 import { useEffect, useState } from 'react';
 import Repo from '../components/collections/RowItems/Repo';
 import Header from '../components/collections/Header/Header';
 import DismissibleAlert from '../components/collections/Alert/DismissibleAlert';
+import LoadingSpinner from '../components/collections/Spinner/LoadingSpinner';
 
 const Main = () => {
   const { authSuccess, error, message, loading, username, favs, favsIds, repos } = useSelector(
@@ -37,21 +40,20 @@ const Main = () => {
     dispatch(putFavsThunk(newRepo));
   };
 
+  const handleDismiss = () => {
+    dispatch(dismissError());
+  };
+
   const handleFavsClick = () => {
     if (showFavs) {
-      setItems(favs);
       setShowFavs(false);
       return;
     }
-    setItems(repos);
     setShowFavs(true);
   };
 
-  const handleSignClick = (repo, isFav) => {
-    const newRepo = _.cloneDeep(repo);
-    newRepo.checked = !isFav;
-
-    dispatch(putFavsThunk(newRepo));
+  const handleSignOut = () => {
+    dispatch(signOut());
   };
 
   useEffect(() => {
@@ -68,19 +70,20 @@ const Main = () => {
   return (
     <>
       <div className="h-100 position-relative">
+        <LoadingSpinner show={loading} />
         <Header
           authSuccess={authSuccess}
           username={username}
           showFavs={showFavs}
-          onClick={handleSignClick}
+          onClick={handleSignOut}
           onFavsClick={handleFavsClick}
         />
         <Auth authSuccess={authSuccess} onLogin={handleLogin} onSignUp={handleSignUp} />
         <div className="py-3">
-          {_.isEmpty(items) ? (
+          {_.isEmpty(showFavs ? favs : repos) ? (
             <h4 className="text-center my-5">{`You have no ${showFavs ? 'favs' : 'repos'}`}</h4>
           ) : (
-            _.map(items, (repo) => (
+            _.map(showFavs ? favs : repos, (repo) => (
               <Repo
                 key={repo?.id}
                 repo={repo}
@@ -92,7 +95,7 @@ const Main = () => {
           )}
         </div>
       </div>
-      <DismissibleAlert show={error} message={message} error={error} onClick={console.log} />
+      <DismissibleAlert show={error} message={message} onClick={handleDismiss} />
     </>
   );
 };
