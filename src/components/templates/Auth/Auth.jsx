@@ -5,13 +5,15 @@ import Modal from 'react-bootstrap/Modal';
 import { AUTH_FORM, AUTH_FORM_LABEL } from '../../../utils/constants';
 import Login from '../../collections/Forms/Login';
 import SignUp from '../../collections/Forms/SignUp';
+import githubLogo from '../../../assets/images/github-logo.svg';
 
-const Auth = ({ authSuccess = false, onLogin = () => {}, onSignUp = () => {} }) => {
-  const [show, setShow] = useState(false);
+const Auth = ({
+  authSuccess = false,
+  onLogin = () => {},
+  onSignUp = () => {},
+  onClick = () => {}
+}) => {
   const [form, setForm] = useState(AUTH_FORM.LOGIN);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const handleFormChange = () => {
     if (form === AUTH_FORM.LOGIN) {
@@ -39,30 +41,24 @@ const Auth = ({ authSuccess = false, onLogin = () => {}, onSignUp = () => {} }) 
   };
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow}>
-        Login
-      </Button>
-
-      <Modal show={!authSuccess} onHide={handleClose} backdrop="static" keyboard={false} centered>
-        <Modal.Header>
-          <Modal.Title>{AUTH_FORM_LABEL[form]}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {form === AUTH_FORM.LOGIN && <Login onSubmit={handleLogin} />}
-          {form === AUTH_FORM.SIGNUP && <SignUp onSubmit={handleSignUp} />}
-        </Modal.Body>
-        <Modal.Footer>
-          {/* <Button variant="secondary" onClick={handleClose}>
+    <Modal show={!authSuccess} backdrop="static" keyboard={false} centered>
+      <Modal.Header>
+        <Modal.Title>{AUTH_FORM_LABEL[form]}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {form === AUTH_FORM.LOGIN && <Login onSubmit={handleLogin} />}
+        {form === AUTH_FORM.SIGNUP && <SignUp onSubmit={handleSignUp} />}
+      </Modal.Body>
+      <Modal.Footer>
+        {/* <Button variant="secondary" onClick={handleClose}>
             Close
           </Button> */}
-          <Button onClick={handleFormChange} variant="link">{`Or ${handleLabel()}`}</Button>
-          {/* <Button onClick={handleSubmit} variant="primary">
+        <Button onClick={handleFormChange} variant="link">{`Or ${handleLabel()}`}</Button>
+        {/* <Button onClick={handleSubmit} variant="primary">
             Submit
           </Button> */}
-        </Modal.Footer>
-      </Modal>
-    </>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
